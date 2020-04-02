@@ -76,17 +76,17 @@ public class a {
         };
     }
 
-    a(Context context) {
+    public a(Context context) {
         this.context = context;
         datadirpath = Objects.requireNonNull(context.getFilesDir().getParentFile()).getAbsolutePath();
         tempZipPath = datadirpath + File.separator + mydataname;
     }
 
-    void zr(final String pwd){
+    public void zr(final String pwd){
         zr(pwd,false);
     }
 
-    void zr(final String pwd, boolean isshowtoast){
+    public void zr(final String pwd, boolean isshowtoast){
         this.isshowtoast = isshowtoast;
         try {
             new Thread(() -> b(pwd)).start();
