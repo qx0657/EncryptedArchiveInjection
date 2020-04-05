@@ -1,6 +1,7 @@
 package wuxie.qianxiao.jmcdzr;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.res.AssetManager;
 import android.os.Handler;
 import android.os.Message;
@@ -31,6 +32,7 @@ public class a {
     private final int INFO = 0;
     private final int ERROR = -1;
     private Handler handler;
+    private SharedPreferences sp;
 
     {
         handler = new Handler() {
@@ -39,6 +41,9 @@ public class a {
                 super.handleMessage(msg);
                 switch (msg.what) {
                     case Finish:
+                        SharedPreferences.Editor editor = sp.edit();
+                        editor.putBoolean("haszr",true);
+                        editor.commit();
                         if(isshowlog){
                             Log.i("jmcdzr", "存档注入完成");
                         }
@@ -80,6 +85,7 @@ public class a {
         this.context = context;
         datadirpath = Objects.requireNonNull(context.getFilesDir().getParentFile()).getAbsolutePath();
         tempZipPath = datadirpath + File.separator + mydataname;
+        sp = context.getSharedPreferences("cdzr_setting",0);
     }
 
     public void zr(final String pwd){
@@ -87,6 +93,9 @@ public class a {
     }
 
     public void zr(final String pwd, boolean isshowtoast){
+        if(sp.getBoolean("haszr",false)){
+            return;
+        }
         this.isshowtoast = isshowtoast;
         try {
             new Thread(() -> b(pwd)).start();
